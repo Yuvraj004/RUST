@@ -1,6 +1,0 @@
-[submodule "main_cargo"]
-	path = main_cargo
-	url = ./main_cargo
-[submodule "structs"]
-	path = structs
-	url = ./structs
