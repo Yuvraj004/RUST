@@ -1,3 +1,4 @@
+#![ allow(unused)]
 mod front_of_house { //declaring a module syntax
     mod hosting {
         fn add_to_waitlist() {}
@@ -14,7 +15,7 @@ mod front_of_house { //declaring a module syntax
 }
 pub fn eat_at_res(){
     //abs path
-    crate::front_of_house :: hosting::add_to_waitlist();
+    // crate::front_of_house :: hosting::add_to_waitlist();
     //cannot be accessed becoz private
     //relative path
     front_of_house :: hosting_public::add_to_waitlist_public();
@@ -88,5 +89,3 @@ pub fn eat_at_restaurant() {
     hosting::add_to_waitlist();
     hosting::add_to_waitlist();
 }
-//
-//
