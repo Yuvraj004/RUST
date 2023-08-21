@@ -5,8 +5,14 @@ use minigrep::Config;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let config= Config::build(&args).unwrap_or_else(|err|{
-        eprintln!("problem parsing args: {err}");//for printing errors directly
+    // let config= Config::build(&args).unwrap_or_else(|err|{
+    //     eprintln!("problem parsing args: {err}");//for printing errors directly
+    //     process::exit(1);
+    // });
+
+        //now we are directly passing  ownership of the iterator returned to config::build RATHER THAN PAASSING A SLICE OF THE VECTOR STORED ITERATOR VALUES
+    let config = Config::build(env::args()).unwrap_or_else(|err| {
+        eprintln!("Problem parsing arguments: {err}");
         process::exit(1);
     });
 
