@@ -55,12 +55,16 @@ impl Config {
 //after using iterators
 impl Config {
     pub fn build(mut args: impl Iterator<Item = String>,) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
+        arge.next(); //to ignore the name of the program which is the first value of args
 
-        let query = args[1].clone();
-        let file_path = args[2].clone();
+        let query = match args.next(){
+            Some(arg) =>arg,
+            None =>return Err("Didn't get a query string"),
+        };
+        let file_path = match args.next(){
+            Some(arg) =>arg,
+            None => return Err("Didn't get a file_path"),
+        };
 
         let ignore_case = env::var("IGNORE_CASE").is_ok();
 
@@ -71,16 +75,13 @@ impl Config {
         })
     }
 }
+// functional programming style prefers to minimize the amount of mutable state to make code clearer. 
+// Removing the mutable state might enable a future enhancement to make searching happen in parallel, because we wouldn’t have to manage concurrent access to the results vector.
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut results = Vec::new();
-
-    for line in contents.lines() {
-        if line.contains(query) {
-            results.push(line);
-        }
-    }
-
-    results
+    contents
+        .lines()
+        .filter(|line| line.contains(query))
+        .collect()
 }
 
 //search  case insensitive function
@@ -90,15 +91,20 @@ pub fn search_case_insensitive<'a>(
 )  -> Vec<&'a str>{
 
     let query = query.to_lowercase();// calling to_lowercase creates new data rather than referencing existing data therefore query is now a string not a string slice
-    let mut results = Vec::new();
+    //without use of iterators
+    // let mut results = Vec::new();
+    // for line in contents.lines(){
+    //     if line.to_lowercase().contains(&query){
+    //         results.push(line);
+    //     }
+    // }
+    // results
 
-
-    for line in contents.lines(){
-        if line.to_lowercase().contains(&query){
-            results.push(line);
-        }
-    }
-    results
+    //with use of iterators
+    contents
+        .lines()
+        .filter(|line| line.to_lowercase().contains(query))
+        .collect()
 }
 
 #[cfg(test)]
