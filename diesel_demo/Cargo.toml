@@ -18,5 +18,9 @@ doc = false
 name = "write_post"
 doc = false
 
+[[bin]]
+name = "publish_post"
+doc = true
+
 [lib]
 doc = false
