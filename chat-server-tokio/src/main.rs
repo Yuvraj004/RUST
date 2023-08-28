@@ -8,14 +8,12 @@ async fn main() {
     println!("Hello, world!");
     let listener = TcpListener::bind("localhost:8080").await.unwrap(); //returns a future therfore we use await
 
-    let (tx,mut rx) = broadcast::channel::<String>(10);
+    let (tx, _rx) = broadcast::channel::<String>(10);
 
     loop {
         let (mut _sockett, _addr) = listener.accept().await.unwrap();
 
-        //separation of read and write part required becoz Buffreader is taking owneship of the socket earlier
-
-        //removing errors by clonign tx
+        //removing errors by cloning tx
         let tx = tx.clone();
         let mut rx = tx.subscribe();
         tokio::spawn(async move{
@@ -25,19 +23,20 @@ async fn main() {
 
             let mut line = String::new();
             loop {
-                //to store each line
-                //read_line fucntion adds to the prevous line doesnot generate new one
-                let bytes_read = reader.read_line(&mut line).await.unwrap();
-                if bytes_read == 0 {
-                    break;
+                //problem: same msg is also repeating in same client
+                tokio::select! {
+                    result = reader.read_line(&mut line) =>{
+                        if result.unwrap() == 0 {
+                            break;
+                        }
+                        tx.send(line.clone()).unwrap();
+                        line.clear();
+                    }
+                    result = rx.recv()=>{
+                        let msg = result.unwrap();
+                        writer.write_all(msg.as_bytes()).await.unwrap(); //passing the buffer to be written untill the no of bytes read
+                    }
                 }
-
-                tx.send(line.clone()).unwrap();
-
-                let msg = rx.recv().await.unwrap();
-
-                writer.write_all(msg.as_bytes()).await.unwrap(); //passing the buffer to be written untill the no of bytes read
-                line.clear()
             }
         });
         
