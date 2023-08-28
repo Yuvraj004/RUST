@@ -8,7 +8,7 @@ async fn main() {
     println!("Hello, world!");
     let listener = TcpListener::bind("localhost:8080").await.unwrap(); //returns a future therfore we use await
 
-    let (tx, _rx) = broadcast::channel::<String>(10);
+    let (tx, _rx) = broadcast::channel(10);
 
     loop {
         let (mut _sockett, _addr) = listener.accept().await.unwrap();
@@ -29,12 +29,15 @@ async fn main() {
                         if result.unwrap() == 0 {
                             break;
                         }
-                        tx.send(line.clone()).unwrap();
+                        tx.send((line.clone(),_addr)).unwrap();
                         line.clear();
                     }
                     result = rx.recv()=>{
-                        let msg = result.unwrap();
-                        writer.write_all(msg.as_bytes()).await.unwrap(); //passing the buffer to be written untill the no of bytes read
+                        let (msg,other_addr) = result.unwrap();
+                        if _addr!=other_addr {
+                            writer.write_all(msg.as_bytes()).await.unwrap(); //passing the buffer to be written untill the no of bytes read
+                        }
+                        
                     }
                 }
             }
