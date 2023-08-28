@@ -25,8 +25,6 @@ async fn main() {
 
             let mut line = String::new();
             loop {
-                
-
                 //to store each line
                 //read_line fucntion adds to the prevous line doesnot generate new one
                 let bytes_read = reader.read_line(&mut line).await.unwrap();
