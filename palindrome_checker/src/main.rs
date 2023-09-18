@@ -36,3 +36,14 @@ fn main() {
     }
     println!("total matched chars: {}",count);
 }
+pub fn matching_chars(s: &str) -> usize {
+    let mid = s.len() / 2;
+    
+    let left = &s[..mid];
+    let right = &s[s.len() - mid..];
+    
+    let left_chars = left.chars();
+    let right_chars = right.chars().rev();
+
+    left_chars.zip(right_chars).filter(|(a,b)| a == b).count()
+}
