@@ -1,0 +1,27 @@
+PPROJECTS TO BE DONE
+
+File Reader:
+
+Write a program that reads a file and outputs its contents.
+Simple HTTP Server (Advanced):
+
+Build a basic HTTP server that can handle incoming requests and respond with a message.
+Command Line Calculator:
+
+Implement a basic calculator that can perform addition, subtraction, multiplication, and division.
+Simple Web Scraper (Advanced):
+
+If you're feeling adventurous, you can try building a web scraper using libraries like reqwest for making HTTP requests.
+Personal Budget Tracker:
+Create a program that allows users to input income and expenses, and then calculates the remaining budget.
+Tic-Tac-Toe Game:
+Implement a console-based version of the classic Tic-Tac-Toe game.
+Hangman Game:
+Create a console-based version of the classic Hangman game.
+Unit Converter:
+Build a program that can convert between different units (e.g., length, weight, volume).
+Basic Database (Advanced):
+You can try building a simple key-value store or a basic database system to learn more about Rust's memory management and data structures.
+
+
+Create one group messaging feature on my react application. My tech stack is react and Django.  Please apply if you have already done similar feature apply this. And let me know how you will implement.  
